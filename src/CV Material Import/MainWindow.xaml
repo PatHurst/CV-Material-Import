@@ -35,7 +35,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <DataGrid x:Name="MaterialGrid" />
+            <DataGrid x:Name="MaterialGrid" Grid.Row="1" />
 
         </Grid>
 

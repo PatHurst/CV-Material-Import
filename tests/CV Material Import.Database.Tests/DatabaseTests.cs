@@ -1,6 +1,6 @@
 ﻿using CV_Material_Import.Database;
 
-namespace CV_Material_Import.DatabaseTests;
+namespace CV_Material_Import.Database.Tests;
 
 [TestClass]
 public sealed class DatabaseTests
@@ -10,21 +10,21 @@ public sealed class DatabaseTests
 	[TestMethod]
 	public void AssertConnectionSucceedsWithValidConnectionString()
 	{
-		Database.Database db = new(_validConnectionString);
+		Database db = new(_validConnectionString);
 		Assert.IsTrue(db.IsConnected);
 	}
 
 	[TestMethod]
 	public void AssertConnectionSucceedsWithValidCredentials()
 	{
-		Database.Database db = new(@"PATRICK_DESKTOP\CV", "CVData_2023");
+		Database db = new(@"PATRICK_DESKTOP\CV", "CVData_2023");
 		Assert.IsTrue(db.IsConnected);
 	}
 
 	[TestMethod]
 	public void CanExecuteValidSQL()
 	{
-		Database.Database db = new(_validConnectionString);
+		Database db = new(_validConnectionString);
 
 		db.Execute("IF OBJECT_ID('test_table', 'U') IS NULL BEGIN CREATE TABLE test_table (number INT) END;").Wait();
 
@@ -37,7 +37,7 @@ public sealed class DatabaseTests
 	[TestMethod]
 	public void ReturnsNegativeOneOnInvalidSQL()
 	{
-		Database.Database db = new(_validConnectionString);
+		Database db = new(_validConnectionString);
 
 		Assert.IsTrue(db.Execute("Invalid SQL").Result == -1);
 	}
