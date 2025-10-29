@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{86A8479D-0DD5-48C0-95FC-BC178FFAC37C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV Material Import.Database.Tests", "tests\CV Material Import.Database.Tests\CV Material Import.Database.Tests.csproj", "{A5F1E562-5487-4CF5-B2E4-BD9350B8F06B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV Material Import.DatabaseTests", "tests\CV Material Import.Database.Tests\CV Material Import.DatabaseTests.csproj", "{A5F1E562-5487-4CF5-B2E4-BD9350B8F06B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
