@@ -30,17 +30,21 @@ internal static class Utilities
 
 	public static void SetValueInRegistry<T>(string keyPath, string valueName, T value)
 	{
-		switch (value)
+		try
 		{
-			case int:
-				Registry.SetValue(keyPath, valueName, value, RegistryValueKind.DWord);
-				break;
-			case string:
-				Registry.SetValue(keyPath, valueName, value, RegistryValueKind.String);
-				break;
-			default:
-				Registry.SetValue(keyPath, valueName, value ?? default!);
-				break;
+			switch (value)
+			{
+				case int:
+					Registry.SetValue(keyPath, valueName, value, RegistryValueKind.DWord);
+					break;
+				case string:
+					Registry.SetValue(keyPath, valueName, value, RegistryValueKind.String);
+					break;
+				default:
+					Registry.SetValue(keyPath, valueName, value ?? default!);
+					break;
+			}
 		}
+		catch (UnauthorizedAccessException) { }
 	}
 }

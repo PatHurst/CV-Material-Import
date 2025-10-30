@@ -18,15 +18,16 @@
 
         <Menu x:Name="MainMenu" DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Open CSV File" />
+                <MenuItem Click="OpenCSVFile" Header="Open CSV File" />
                 <Separator />
                 <MenuItem Header="Exit" />
             </MenuItem>
-            <MenuItem Header="Database Settings" />
+            <MenuItem Click="DatabaseSettings_Click" Header="Database Settings" />
         </Menu>
 
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
-            <StatusBarItem Content="Database Disconnected..." />
+            <StatusBarItem x:Name="ConnectionStatusLabel" />
+            <StatusBarItem x:Name="RowsInsertedStatus" HorizontalAlignment="Right" />
         </StatusBar>
 
         <Grid>
@@ -72,11 +73,23 @@
                         Width="120"
                         Height="24"
                         Margin="15,5,15,5"
-                        Click="OpenCSVFileButton_Click"
+                        Click="OpenCSVFile"
                         Content="Open CSV File" />
+                <ComboBox x:Name="MaterialFoldersComboBox"
+                          Width="120"
+                          Height="24" />
+                <Button x:Name="InsertMaterialButton"
+                        Width="120"
+                        Height="24"
+                        Margin="15,5,15,5"
+                        Click="InsertMaterialButton_Click"
+                        Content="Insert Materials" />
             </StackPanel>
 
-            <DataGrid x:Name="MaterialGrid" Grid.Row="1" />
+            <DataGrid x:Name="MaterialGrid"
+                      Grid.Row="1"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True" />
 
         </Grid>
 

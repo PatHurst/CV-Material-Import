@@ -2,11 +2,90 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CV_Material_Import"
-        mc:Ignorable="d"
-        Title="Database Settings Window" Height="400" Width="600" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid>
-        
-    </Grid>
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Database Settings Window"
+        Width="650"
+        Height="450"
+        ContentRendered="Window_Loaded"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d">
+    <DockPanel>
+        <StackPanel Margin="10,10,10,10"
+                    DockPanel.Dock="Top"
+                    Orientation="Vertical">
+            <RadioButton x:Name="AutomaticConnectionRadioButton"
+                         Content="Automatic Connection"
+                         GroupName="ConnectionGroup"
+                         IsChecked="True" />
+            <GroupBox Header="Automatic Connection">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Select your CV version " />
+                    <ComboBox x:Name="VersionComboBox"
+                              Height="24"
+                              IsEnabled="{Binding ElementName=AutomaticConnectionRadioButton, Path=IsChecked}"
+                              SelectedIndex="0"
+                              SelectionChanged="VersionComboBox_SelectionChanged">
+                        <ComboBoxItem Content="2022" Tag="2022" />
+                        <ComboBoxItem Content="2023" Tag="2023" />
+                        <ComboBoxItem Content="2024" Tag="2024" />
+                        <ComboBoxItem Content="2025" Tag="2025" />
+                    </ComboBox>
+                </StackPanel>
+            </GroupBox>
+            <RadioButton x:Name="ManualConnectionRadioButton"
+                         Margin="0,15,0,0"
+                         Content="Manual Connection"
+                         GroupName="ConnectionGroup"
+                         IsChecked="False" />
+            <GroupBox Header="Manual Connection">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Enter the Sever Name in format {Machine}\CV[25]:" />
+                    <TextBox x:Name="ServerNameTextBox"
+                             Width="200"
+                             HorizontalAlignment="Left"
+                             IsEnabled="{Binding ElementName=ManualConnectionRadioButton, Path=IsChecked}"
+                             Text=""
+                             TextChanged="NameTextBox_TextChanged" />
+                    <Label Content="Enter the Database Name:" />
+                    <TextBox x:Name="DatabaseNameTextBox"
+                             Width="200"
+                             HorizontalAlignment="Left"
+                             IsEnabled="{Binding ElementName=ManualConnectionRadioButton, Path=IsChecked}"
+                             Text=""
+                             TextChanged="NameTextBox_TextChanged" />
+                </StackPanel>
+            </GroupBox>
+            <Label Margin="0,15,0,0" Content="Connection String:" />
+            <TextBox x:Name="ConnectionStringTextBox"
+                     HorizontalContentAlignment="Stretch"
+                     IsReadOnly="True"
+                     Text="" />
+            <Button x:Name="TestConnectionButton"
+                    Width="200"
+                    Margin="0,10,0,0"
+                    HorizontalAlignment="Left"
+                    Click="TestConnectionButton_Click"
+                    Content="Test Database Connection" />
+            <Label x:Name="ConnectionStatusLabel" Content=" " />
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    DockPanel.Dock="Bottom"
+                    Orientation="Horizontal">
+            <Button x:Name="CancelButton"
+                    Width="120"
+                    Margin="5,5,5,5"
+                    Click="CancelButton_Click"
+                    Content="Cancel" />
+            <Button x:Name="SaveButton"
+                    Width="120"
+                    Margin="5,5,5,5"
+                    Click="SaveButton_Click"
+                    Content="Save" />
+        </StackPanel>
+
+    </DockPanel>
 </Window>

@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-
-using CV_Material_Import.CSVReader;
-
-using Microsoft.Win32;
+﻿using CV_Material_Import.CSVReader;
 
 namespace CV_Material_Import;
 
@@ -19,6 +10,9 @@ internal static class Settings
 	private static CSVDelimiter _delimiter;
 	private static CSVTextQualifier _textQualifier;
 	private static CSVUnit _unit;
+	private static string _serverName;
+	private static string _databaseName;
+	private static int _currentVersion;
 	private static readonly string _keyPath = @"HKEY_CURRENT_USER\Software\CV Material Import";
 
 	static Settings()
@@ -26,6 +20,9 @@ internal static class Settings
 		_delimiter = (CSVDelimiter)Utilities.GetValueFromRegistry<int>(_keyPath, nameof(Delimiter));
 		_textQualifier = (CSVTextQualifier)Utilities.GetValueFromRegistry<int>(_keyPath, nameof(TextQualifier));
 		_unit = (CSVUnit)Utilities.GetValueFromRegistry<int>(_keyPath, nameof(Unit));
+		_serverName = Utilities.GetValueFromRegistry<string>(_keyPath, nameof(ServerName));
+		_databaseName = Utilities.GetValueFromRegistry<string>(_keyPath, nameof(DatabaseName));
+		_currentVersion = Utilities.GetValueFromRegistry<int>(_keyPath, nameof(CurrentVersion));
 	}
 
 	/// <summary>
@@ -67,4 +64,42 @@ internal static class Settings
 		}
 	}
 
+	/// <summary>
+	/// The name of the database server.
+	/// </summary>
+	public static string ServerName
+	{
+		get => _serverName;
+		set
+		{
+			_serverName = value;
+			Utilities.SetValueInRegistry(_keyPath, nameof(ServerName), value);
+		}
+	}
+
+	/// <summary>
+	/// The name of the database.
+	/// </summary>
+	public static string DatabaseName
+	{
+		get => _databaseName;
+		set
+		{
+			_databaseName = value;
+			Utilities.SetValueInRegistry(_keyPath, nameof(DatabaseName), value);
+		}
+	}
+
+	/// <summary>
+	/// The current version of CV.
+	/// </summary>
+	public static int CurrentVersion
+	{
+		get => _currentVersion;
+		set
+		{
+			_currentVersion = value;
+			Utilities.SetValueInRegistry(_keyPath, nameof(CurrentVersion), value);
+		}
+	}
 }

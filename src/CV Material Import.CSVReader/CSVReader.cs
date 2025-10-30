@@ -67,4 +67,40 @@ public class CSVReader
 			return dataTable;
 		});
 	}
+
+	public async Task<IEnumerable<IEnumerable<string>>> ReadAsList()
+	{
+		return await Task.Run(() =>
+		{
+			List<List<string>> grid = [];
+			try
+			{
+				List<string> lines = File.ReadAllLines(_file).ToList();
+				for (int i = 0; i < lines.Count; i++)
+				{
+					switch (_textQualifier)
+					{
+						case CSVTextQualifier.Quotation:
+							lines[i] = lines[i].Replace((char)CSVTextQualifier.Quotation, (char)0);
+							break;
+						case CSVTextQualifier.Apostrophe:
+							lines[i] = lines[i].Replace((char)CSVTextQualifier.Apostrophe, (char)0);
+							break;
+					}
+				}
+
+				foreach (string line in lines)
+				{
+					List<string> fields = [.. line.Split((char)_delimiter)];
+					grid.Add(fields);
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message, "Error Reading CSV File");
+			}
+
+			return grid;
+		});
+	}
 }
