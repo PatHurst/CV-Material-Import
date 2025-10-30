@@ -26,48 +26,10 @@ public class CSVReader
 		_textQualifier = textQualifier;
 	}
 
-	public async Task<DataTable> Read()
-	{
-		return await Task.Run(() =>
-		{
-			DataTable dataTable = new("Materials");
-			try
-			{
-				string[] lines = File.ReadAllLines(_file);
-				for (int i = 0; i < lines.Length; i++)
-				{
-					switch (_textQualifier)
-					{
-						case CSVTextQualifier.Quotation:
-							lines[i] = lines[i].Replace((char)CSVTextQualifier.Quotation, (char)0);
-							break;
-						case CSVTextQualifier.Apostrophe:
-							lines[i] = lines[i].Replace((char)CSVTextQualifier.Apostrophe, (char)0);
-							break;
-					}
-				}
-
-				int countOfColumns = lines.First().Count(c => c == (char)_delimiter) + 1;
-				for (int i = 0; i < countOfColumns; i++)
-					dataTable.Columns.Add($"Column{i}");
-
-				foreach (string line in lines)
-				{
-					string[] fields = line.Split((char)_delimiter);
-					for (int i = 0; i < fields.Length; i++)
-						fields[i] = fields[i].Trim();
-					dataTable.Rows.Add(fields);
-				}
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show(ex.Message, "Error Reading CSV File");
-			}
-
-			return dataTable;
-		});
-	}
-
+	/// <summary>
+	/// Return the CSV file as a 2 dimensional IEnumerable.
+	/// </summary>
+	/// <returns></returns>
 	public async Task<IEnumerable<IEnumerable<string>>> ReadAsList()
 	{
 		return await Task.Run(() =>
@@ -81,10 +43,10 @@ public class CSVReader
 					switch (_textQualifier)
 					{
 						case CSVTextQualifier.Quotation:
-							lines[i] = lines[i].Replace((char)CSVTextQualifier.Quotation, (char)0);
+							lines[i] = lines[i].Replace((char)CSVTextQualifier.Quotation, ' ');
 							break;
 						case CSVTextQualifier.Apostrophe:
-							lines[i] = lines[i].Replace((char)CSVTextQualifier.Apostrophe, (char)0);
+							lines[i] = lines[i].Replace((char)CSVTextQualifier.Apostrophe, ' ');
 							break;
 					}
 				}

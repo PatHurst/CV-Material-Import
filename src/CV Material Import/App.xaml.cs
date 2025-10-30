@@ -15,11 +15,29 @@ public partial class App : Application
 			SettingsWindow settingsWindow = new();
 			settingsWindow.ShowDialog();
 		}
-		Database ??= new Database.Database(Settings.ServerName, Settings.DatabaseName);
+		Database ??= new Database.Database(Settings.ServerName!, Settings.DatabaseName);
+		InitializeScreens(Database.IsConnected);
+	}
+
+	/// <summary>
+	/// Persist the settings screen until database successfully connects.
+	/// </summary>
+	/// <param name="databaseConnected"></param>
+	private void InitializeScreens(bool databaseConnected)
+	{
+		if (!databaseConnected)
+		{
+			SettingsWindow settingsWindow = new();
+			settingsWindow.ShowDialog();
+		}
 		if (Database.IsConnected)
 		{
 			CV_Material_Import.MainWindow mainWindow = new();
 			mainWindow.Show();
+		}
+		else
+		{
+			InitializeScreens(Database.IsConnected);
 		}
 	}
 

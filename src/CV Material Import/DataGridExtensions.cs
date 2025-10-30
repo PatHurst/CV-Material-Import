@@ -65,8 +65,8 @@ internal static class DataGridExtensions
 			if (indexes.TryGetValue(MaterialFields.Description, out int descIndex))
 				material.Description = row[$"Column{descIndex}"]?.ToString();
 
-			if (indexes.TryGetValue(MaterialFields.SKU, out int skuIndex))
-				material.SKU = row[$"Column{skuIndex}"]?.ToString();
+			//if (indexes.TryGetValue(MaterialFields.SKU, out int skuIndex))
+			//	material.SKU = row[$"Column{skuIndex}"]?.ToString();
 
 			if (indexes.TryGetValue(MaterialFields.DefaultCost, out int costIndex) &&
 				decimal.TryParse(row[$"Column{costIndex}"]?.ToString(), out var cost))

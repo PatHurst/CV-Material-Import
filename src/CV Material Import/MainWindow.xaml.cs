@@ -1,10 +1,9 @@
-﻿using System.Data;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 using CV_Material_Import.CSVReader;
+using CV_Material_Import.Database;
 
 using Microsoft.Win32;
 
@@ -15,15 +14,20 @@ namespace CV_Material_Import;
 /// </summary>
 public partial class MainWindow : Window
 {
-	private string _openedFile = string.Empty;
-	private Dictionary<string, int> _materialFolders = App.Database.GetMaterialFolders();
+	private string _openedFile = string.Empty; // path to currently opened file
+	private Dictionary<string, int> _materialFolders = App.Database.GetMaterialFolders(); //the CV material folders
+
+	public List<string> MaterialFolders
+	{
+		get => _materialFolders.Keys.ToList();
+	}
 
 	public MainWindow()
 	{
 		InitializeComponent();
 		this.DelimiterComboBox.ItemsSource = Enum.GetNames<CSVDelimiter>();
 		this.TextQualifierComboBox.ItemsSource = Enum.GetNames<CSVTextQualifier>();
-		this.MaterialFoldersComboBox.ItemsSource = _materialFolders.Keys;
+		//this.MaterialFoldersComboBox.ItemsSource = _materialFolders.Keys;
 		this.MaterialFoldersComboBox.SelectedIndex = 0;
 		InitializeControls();
 
@@ -57,12 +61,12 @@ public partial class MainWindow : Window
 			CSVTextQualifier.Quotation => 1,
 			CSVTextQualifier.Apostrophe => 2
 		};
-		SetLabel(App.Database.IsConnected);
+		SetLabel(App.Database.IsConnected, App.Database.ToString());
 	}
 
-	private void SetLabel(bool isConnected)
+	private void SetLabel(bool isConnected, string databaseConnection)
 	{
-		ConnectionStatusLabel.Content = isConnected ? "Database Connected" : "Database Disconnected...";
+		ConnectionStatusLabel.Content = (isConnected ? "Database Connected : " : "Database Disconnected... : ") + databaseConnection;
 		ConnectionStatusLabel.Foreground = isConnected ? Brushes.Green : Brushes.Red;
 	}
 
@@ -125,11 +129,12 @@ public partial class MainWindow : Window
 	{
 		SettingsWindow settingsWindow = new();
 		settingsWindow.ShowDialog();
+		_materialFolders = App.Database.GetMaterialFolders();
 	}
 
 	private void OnDatabaseConnectionChanged(object? sender, bool connectionOpen)
 	{
-		SetLabel(connectionOpen);
+		SetLabel(connectionOpen, (sender as Database.Database)!.ToString());
 	}
 
 	private void InsertMaterialButton_Click(object sender, RoutedEventArgs e)

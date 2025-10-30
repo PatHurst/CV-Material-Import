@@ -11,7 +11,7 @@ internal enum MaterialFields
 	Ignore,
 	Name,
 	Description,
-	SKU,
+	//SKU,
 	DefaultCost,
 	SellPrice,
 	Width,

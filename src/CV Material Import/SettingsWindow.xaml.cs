@@ -85,7 +85,10 @@ public partial class SettingsWindow : Window
 		Settings.ServerName = ServerNameTextBox.Text;
 		Settings.DatabaseName = DatabaseNameTextBox.Text;
 		Settings.CurrentVersion = Convert.ToInt32((VersionComboBox.SelectedItem as ComboBoxItem)!.Tag);
-		App.Database.ChangeConnectionn(ConnectionStringTextBox.Text);
+		if (App.Database is null)
+			App.Database = new(ConnectionStringTextBox.Text);
+		else
+			App.Database.ChangeConnection(ConnectionStringTextBox.Text);
 		this.Close();
 	}
 }

@@ -26,12 +26,12 @@ public sealed class DatabaseTests
 	{
 		Database db = new(_validConnectionString);
 
-		db.Execute("IF OBJECT_ID('test_table', 'U') IS NULL BEGIN CREATE TABLE test_table (number INT) END;").Wait();
+		db.Execute("IF OBJECT_ID('test_table', 'U') IS NULL BEGIN CREATE TABLE test_table (number INT) END;");
 
-		Assert.AreEqual(5, db.Execute("INSERT INTO test_table (number) VALUES (1), (2), (3), (4), (5);").Result);
-		Assert.AreEqual(1, db.Execute("DELETE FROM test_table WHERE [number] = 5").Result);
+		Assert.AreEqual(5, db.Execute("INSERT INTO test_table (number) VALUES (1), (2), (3), (4), (5);"));
+		Assert.AreEqual(1, db.Execute("DELETE FROM test_table WHERE [number] = 5"));
 
-		db.Execute("DROP TABLE test_table;").Wait();
+		db.Execute("DROP TABLE test_table;");
 	}
 
 	[TestMethod]
@@ -39,6 +39,6 @@ public sealed class DatabaseTests
 	{
 		Database db = new(_validConnectionString);
 
-		Assert.IsTrue(db.Execute("Invalid SQL").Result == -1);
+		Assert.IsTrue(db.Execute("Invalid SQL") == -1);
 	}
 }

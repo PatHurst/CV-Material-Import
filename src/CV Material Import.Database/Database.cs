@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 
@@ -70,7 +71,7 @@ public class Database
 	/// Reconnect the database with a new connection string.
 	/// </summary>
 	/// <param name="connString"></param>
-	public void ChangeConnectionn(string connString)
+	public void ChangeConnection(string connString)
 	{
 		_connectionString = connString;
 		_connection = new SqlConnection(connString);
@@ -108,6 +109,12 @@ public class Database
 		}
 	}
 
+	/// <summary>
+	/// Retrieve a single value from the database
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	/// <param name="sql">The SQL query</param>
+	/// <returns></returns>
 	public T ExecuteScalar<T>(string sql)
 	{
 		if (!IsConnected)
@@ -130,10 +137,16 @@ public class Database
 		}
 	}
 
+	/// <summary>
+	/// Get the material folders from CV.
+	/// </summary>
+	/// <returns>A dictionary of the folders where the key is the folder name, and the value is the database ID of that folder.</returns>
 	public Dictionary<string, int> GetMaterialFolders()
 	{
 		Dictionary<string, int> folders = [];
-		_command.CommandText = "SELECT TOP(1000)[ID], [Name] FROM[CVData_2023].[dbo].[MaterialMenuTree] WHERE[ParentID] = 0";
+		_command.CommandText = "SELECT TOP (1000) [ID], [Name] FROM [MaterialMenuTree] WHERE [ParentID] = 0";
+		if (!IsConnected)
+			return folders;
 		using SqlDataReader reader = _command.ExecuteReader();
 		while (reader.Read())
 		{
@@ -156,5 +169,15 @@ public class Database
 		}
 	}
 
+	/// <summary>
+	/// Return the server and database names.
+	/// </summary>
+	/// <returns></returns>
+	public override string ToString()
+	{
+		string server = new Regex(@"Server=[^;]+;").Match(_connectionString).Value;
+		string database = new Regex(@"Database=[^;]+;").Match(_connectionString).Value;
+		return server + database;
+	}
 }
 
