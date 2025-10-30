@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 namespace CV_Material_Import.CSVReader;
 
 /// <summary>
-/// Options for character surrounding text.
+/// Represents the unit of the dimensions in the CSV file.
 /// </summary>
-public enum CSVTextQualifier
+public enum CSVUnit
 {
-	None = 0,
-	Quotation = 34,
-	Apostrophe = 39
+	Metric,
+	Imperial
 }

@@ -30,10 +30,51 @@
         </StatusBar>
 
         <Grid>
+
             <Grid.RowDefinitions>
-                <RowDefinition Height="200" />
+                <RowDefinition Height="75" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+
+            <StackPanel Orientation="Horizontal">
+                <GroupBox x:Name="UnitGroupBox"
+                          Width="120"
+                          Margin="15,5,15,5"
+                          Header="Import Unit">
+                    <StackPanel Orientation="Vertical">
+                        <RadioButton x:Name="MetricRadioButton"
+                                     Checked="RadioButton_Checked"
+                                     Content="Metric"
+                                     GroupName="UnitGroup" />
+                        <RadioButton x:Name="ImperialRadioButton"
+                                     Checked="RadioButton_Checked"
+                                     Content="Imperial"
+                                     GroupName="UnitGroup" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox x:Name="DelimiterGroupBox"
+                          Width="120"
+                          Margin="15,5,15,5"
+                          Header="Field Delimiter">
+                    <ComboBox x:Name="DelimiterComboBox"
+                              Height="24"
+                              SelectionChanged="DelimiterComboBox_SelectionChanged" />
+                </GroupBox>
+                <GroupBox x:Name="TextQualifierGroupBox"
+                          Width="120"
+                          Margin="15,5,15,5"
+                          Header="Text Qualifier">
+                    <ComboBox x:Name="TextQualifierComboBox"
+                              Height="24"
+                              SelectionChanged="TextQualifierComboBox_SelectionChanged" />
+                </GroupBox>
+                <Button x:Name="OpenCSVFileButton"
+                        Width="120"
+                        Height="24"
+                        Margin="15,5,15,5"
+                        Click="OpenCSVFileButton_Click"
+                        Content="Open CSV File" />
+            </StackPanel>
 
             <DataGrid x:Name="MaterialGrid" Grid.Row="1" />
 

@@ -18,6 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CV Material Import.CSVReader\CV Material Import.CSVReader.csproj" />
+    <ProjectReference Include="..\CV Material Import.Database\CV Material Import.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="resources\icon_black.ico" />
     <Resource Include="resources\icon_white.ico" />
   </ItemGroup>

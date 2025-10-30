@@ -1,5 +1,6 @@
 ﻿using System.Data;
-using System.Text;
+using System.IO;
+using System.Windows;
 
 namespace CV_Material_Import.CSVReader;
 
@@ -30,39 +31,37 @@ public class CSVReader
 		return await Task.Run(() =>
 		{
 			DataTable dataTable = new("Materials");
-
-			string[] lines = File.ReadAllLines(_file);
-			for (int i = 0; i < lines.Length; i++)
+			try
 			{
-				switch (_textQualifier)
+				string[] lines = File.ReadAllLines(_file);
+				for (int i = 0; i < lines.Length; i++)
 				{
-					case CSVTextQualifier.DoubleQuotation:
-						lines[i] = lines[i].Replace('"', (char)0);
-						break;
-					case CSVTextQualifier.SingleQuotation:
-						lines[i] = lines[i].Replace('\'', (char)0);
-						break;
+					switch (_textQualifier)
+					{
+						case CSVTextQualifier.Quotation:
+							lines[i] = lines[i].Replace((char)CSVTextQualifier.Quotation, (char)0);
+							break;
+						case CSVTextQualifier.Apostrophe:
+							lines[i] = lines[i].Replace((char)CSVTextQualifier.Apostrophe, (char)0);
+							break;
+					}
+				}
+
+				int countOfColumns = lines.First().Count(c => c == (char)_delimiter) + 1;
+				for (int i = 0; i < countOfColumns; i++)
+					dataTable.Columns.Add($"Column{i}");
+
+				foreach (string line in lines)
+				{
+					string[] fields = line.Split((char)_delimiter);
+					for (int i = 0; i < fields.Length; i++)
+						fields[i] = fields[i].Trim();
+					dataTable.Rows.Add(fields);
 				}
 			}
-
-			int countOfColumns = lines.First().Count(c => c == (char)_delimiter) + 1;
-			for (int i = 0; i < countOfColumns; i++)
-				dataTable.Columns.Add($"Column{i}");
-
-			foreach (string line in lines)
+			catch (Exception ex)
 			{
-				string[] fields = line.Split((char)_delimiter);
-				dataTable.Rows.Add(fields);
-			}
-
-			StringBuilder stringBuilder = new StringBuilder();
-			foreach (DataRow row in dataTable.Rows)
-			{
-				for (int i = 0; i < dataTable.Columns.Count; i++)
-				{
-					stringBuilder.Append(row[i].ToString());
-				}
-				stringBuilder.Append(Environment.NewLine);
+				MessageBox.Show(ex.Message, "Error Reading CSV File");
 			}
 
 			return dataTable;
