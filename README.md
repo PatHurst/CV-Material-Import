@@ -8,9 +8,9 @@ An application to import materials into CV from CSV files
 - Easy database connection
 
 ## Bulk import Materials into CV from CSV files
-![screenshot](https://github.com/PatHurst/CV-Material-Import/blob/main/images/screenshot.jpg?raw=true)
+![screenshot](https://github.com/Code-Crafter-s-Consortium/CV-Material-Import/blob/main/images/screenshot.jpg?raw=true)
 ## Easy Database Connection  
-![screenshot](https://github.com/PatHurst/CV-Material-Import/blob/main/images/databaseconnection.jpg?raw=true)
+![screenshot](https://github.com/Code-Crafter-s-Consortium/CV-Material-Import/blob/main/images/screenshot.jpg?raw=true)
 
 ### V1.0.0  
 Released first version  
