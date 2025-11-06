@@ -2,7 +2,6 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 
 using Microsoft.Data.SqlClient;
 
@@ -28,7 +27,7 @@ public class Database
 	public event EventHandler<bool>? ConnectionChanged;
 
 	/// <summary>
-	/// Create an SQL database from a connection string.
+	/// Create an SQL <see cref="Database">Database</see> from a connection string.
 	/// </summary>
 	/// <param name="connString">The connection string to connect to the database</param>
 	public Database(string connString)
@@ -43,7 +42,7 @@ public class Database
 	}
 
 	/// <summary>
-	/// Create an SQL database from server and database name.
+	/// Create an SQL <see cref="Database">Database</see> from server and database name.
 	/// </summary>
 	/// <param name="serverName">The server name. eg. {Machine Name}\CV</param>
 	/// <param name="databaseName">The database name. eg. CVData_2023</param>
@@ -112,9 +111,9 @@ public class Database
 	/// <summary>
 	/// Retrieve a single value from the database
 	/// </summary>
-	/// <typeparam name="T"></typeparam>
+	/// <typeparam name="T">The datatype of the selected field</typeparam>
 	/// <param name="sql">The SQL query</param>
-	/// <returns></returns>
+	/// <returns>The first field of the first column returned by the query.</returns>
 	public T ExecuteScalar<T>(string sql)
 	{
 		if (!IsConnected)
@@ -144,7 +143,7 @@ public class Database
 	public Dictionary<string, int> GetMaterialFolders()
 	{
 		Dictionary<string, int> folders = [];
-		_command.CommandText = "SELECT TOP (1000) [ID], [Name] FROM [MaterialMenuTree] WHERE [ParentID] = 0";
+		_command.CommandText = "SELECT TOP (1000) [ID], [Name] FROM [MaterialMenuTree] WHERE [ParentID] = 0 ORDER BY [Ordinal];";
 		if (!IsConnected)
 			return folders;
 		using SqlDataReader reader = _command.ExecuteReader();

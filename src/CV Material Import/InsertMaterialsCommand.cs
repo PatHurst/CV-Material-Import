@@ -45,9 +45,11 @@ internal class InsertMaterialsCommand
 				$"INSERT INTO layer ([Name], [Description], [MaterialID], [LayerTypeID]) " +
 				$"VALUES ('Face', 'Face', {matID}, 1), ('Back', 'Back', {matID}, 2), ('Edge', 'Edge', {matID}, 3), ('End', 'End', {matID}, 4); " + 
 				$"Insert Into [MaterialMenuTreeItem] ([MenuID], [MenuTreeID], [MaterialID]) Values (1, {_folderID}, {matID}) ";
+
 			if (App.Database.Execute(insertCommand) is -1)
 				if (MessageBox.Show("Cancel Operation?", "Cancel", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
 					return countOfRowsInserted;
+
 			countOfRowsInserted++;
 		}
 		return countOfRowsInserted;

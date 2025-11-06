@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:CV_Material_Import"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Name="mainWindow"
         Title="CV Material Import"
         Width="1200"
         Height="600"
@@ -54,12 +55,22 @@
                                      GroupName="UnitGroup" />
                     </StackPanel>
                 </GroupBox>
+                <GroupBox x:Name="HeaderGroupBox"
+                          Margin="15,5,15,5"
+                          Header="Headers">
+                    <CheckBox x:Name="HasHeadersCheckBox"
+                              Checked="HasHeadersCheckBox_Checked"
+                              Content="Has Headers"
+                              IsChecked="True"
+                              Unchecked="HasHeadersCheckBox_Checked" />
+                </GroupBox>
                 <GroupBox x:Name="DelimiterGroupBox"
                           Width="120"
                           Margin="15,5,15,5"
                           Header="Field Delimiter">
                     <ComboBox x:Name="DelimiterComboBox"
                               Height="24"
+                              ItemsSource="{Binding Delimiters}"
                               SelectionChanged="DelimiterComboBox_SelectionChanged" />
                 </GroupBox>
                 <GroupBox x:Name="TextQualifierGroupBox"
@@ -68,6 +79,7 @@
                           Header="Text Qualifier">
                     <ComboBox x:Name="TextQualifierComboBox"
                               Height="24"
+                              ItemsSource="{Binding TextQualifiers}"
                               SelectionChanged="TextQualifierComboBox_SelectionChanged" />
                 </GroupBox>
                 <Button x:Name="OpenCSVFileButton"
@@ -80,7 +92,8 @@
                 <ComboBox x:Name="MaterialFoldersComboBox"
                           Width="120"
                           Height="24"
-                          ItemsSource="{Binding MaterialFolders}" />
+                          ItemsSource="{Binding MaterialFolders}"
+                          SelectedIndex="0" />
                 <Button x:Name="InsertMaterialButton"
                         Width="120"
                         Height="24"
@@ -92,10 +105,12 @@
 
             <DataGrid x:Name="MaterialGrid"
                       Grid.Row="1"
-                      AutoGenerateColumns="False"
-                      CanUserResizeRows="False"
-                      CanUserSortColumns="False"
-                      IsReadOnly="True" />
+                      AutoGenerateColumns="True"
+                      CanUserResizeRows="True"
+                      CanUserSortColumns="True"
+                      IsReadOnly="False"
+                      ItemsSource="{Binding Path=DataView, Mode=OneWay}"
+                      Loaded="MaterialGrid_Loaded" />
 
         </Grid>
 
