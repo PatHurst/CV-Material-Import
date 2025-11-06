@@ -28,9 +28,9 @@ public class Material
 		//sb.AppendLine($"{nameof(SKU)}: {SKU}");
 		sb.AppendLine($"{nameof(DefaultCost)}: {DefaultCost:C}");
 		sb.AppendLine($"{nameof(SellPrice)}: {SellPrice:C}");
-		sb.AppendLine($"{nameof(Width)}: {Width} mm");
-		sb.AppendLine($"{nameof(Length)}: {Length} mm");
-		sb.AppendLine($"{nameof(Thickness)}: {Thickness} mm");
+		sb.AppendLine($"{nameof(Width)}: {Width}");
+		sb.AppendLine($"{nameof(Length)}: {Length}");
+		sb.AppendLine($"{nameof(Thickness)}: {Thickness}");
 		return sb.ToString();
 	}
 

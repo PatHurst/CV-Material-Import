@@ -1,127 +1,78 @@
-﻿using System.Windows.Controls;
+﻿using System.Data;
+using System.Windows.Controls;
+
+using CV_Material_Import.CSVReader;
 
 namespace CV_Material_Import;
 
 /// <summary>
 /// Stores methods to operate on the datagrid data.
 /// </summary>
-/// <remarks>
-/// I'm pretty unhappy with this class. Needs to be cleaned up and simplified. 
-/// </remarks>
 internal static class DataGridExtensions
 {
 	/// <summary>
-	/// Loads the datagrid from a 2 dimensional IEnumerable.
-	/// </summary>
-	/// <param name="grid"></param>
-	/// <param name="table"></param>
-	public static void LoadFromGrid(this DataGrid grid, IEnumerable<IEnumerable<string>> table)
-	{
-		var rows = table.ToList();
-		int columnCount = rows.First().Count();
-
-		grid.Columns.Clear();
-		grid.Items.Clear();
-
-		for (int i = 0; i < columnCount; i++)
-		{
-			grid.Columns.Add(new DataGridTextColumn
-			{
-				Header = CreateMaterialComboBox(),
-				Binding = new System.Windows.Data.Binding($"Column{i}"),
-				Width = 150
-			});
-		}
-
-		foreach (IEnumerable<string> line in rows)
-		{
-			var obj = new System.Dynamic.ExpandoObject() as IDictionary<string, object>;
-			int colIndex = 0;
-			foreach (string cell in line)
-			{
-				obj[$"Column{colIndex}"] = cell;
-				colIndex++;
-			}
-			grid.Items.Add(obj);
-		}
-	}
-
-	/// <summary>
 	/// Returns the materials from the grid using the selections from headers. 
 	/// </summary>
-	/// <param name="grid"></param>
-	/// <returns></returns>
+	/// <param name="grid">The Datagrid</param>
+	/// <returns>An <see cref="IEnumerable{T}">IEnumberable</see> of <see cref="Material">Material</see></returns>
 	public static IEnumerable<Material> GetMaterials(this DataGrid grid)
 	{
 		List<Material> materials = [];
-		Dictionary<MaterialFields, int> indexes = grid.LoadIndexes();
-		foreach (IDictionary<string, object> row in grid.Items)
+		Dictionary<MaterialFields, int> indexes = grid.GetColumnIndexes();
+		foreach (var item in grid.Items)
 		{
-			Material material = new();
-
-			if (indexes.TryGetValue(MaterialFields.Name, out int nameIndex))
-				material.Name = row[$"Column{nameIndex}"]?.ToString();
-
-			if (indexes.TryGetValue(MaterialFields.Description, out int descIndex))
-				material.Description = row[$"Column{descIndex}"]?.ToString();
-
-			//if (indexes.TryGetValue(MaterialFields.SKU, out int skuIndex))
-			//	material.SKU = row[$"Column{skuIndex}"]?.ToString();
-
-			if (indexes.TryGetValue(MaterialFields.DefaultCost, out int costIndex) &&
-				decimal.TryParse(row[$"Column{costIndex}"]?.ToString(), out var cost))
-				material.DefaultCost = cost;
-
-			if (indexes.TryGetValue(MaterialFields.SellPrice, out int priceIndex) &&
-				decimal.TryParse(row[$"Column{priceIndex}"]?.ToString(), out var price))
-				material.SellPrice = price;
-
-			if (indexes.TryGetValue(MaterialFields.Width, out int widthIndex) &&
-				double.TryParse(row[$"Column{widthIndex}"]?.ToString(), out var width))
-				material.Width = Math.Round(Settings.Unit == CSVReader.CSVUnit.Metric ? width : width * 25.4, 3);
-
-			if (indexes.TryGetValue(MaterialFields.Length, out int lengthIndex) &&
-				double.TryParse(row[$"Column{lengthIndex}"]?.ToString(), out var length))
-				material.Length = Math.Round(Settings.Unit == CSVReader.CSVUnit.Metric ? length : length * 25.4);
-
-			if (indexes.TryGetValue(MaterialFields.Thickness, out int thickIndex) &&
-				double.TryParse(row[$"Column{thickIndex}"]?.ToString(), out var thickness))
-				material.Thickness = Math.Round(Settings.Unit == CSVReader.CSVUnit.Metric ? thickness : thickness * 25.4);
-
-			materials.Add(material);
+			if (item is not DataRowView row)
+				continue;
+			Material m = new();
+			if (indexes[MaterialFields.Name] is not -1)
+				m.Name = Convert.ToString(row[indexes[MaterialFields.Name]]);
+			if (indexes[MaterialFields.Description] is not -1)
+				m.Description = Convert.ToString(row[indexes[MaterialFields.Description]]);
+			if (indexes[MaterialFields.DefaultCost] is not -1)
+				m.DefaultCost = Convert.ToDecimal(row[indexes[MaterialFields.DefaultCost]]);
+			if (indexes[MaterialFields.SellPrice] is not -1)
+				m.SellPrice = Convert.ToDecimal(row[indexes[MaterialFields.SellPrice]]);
+			if (indexes[MaterialFields.Width] is not -1)
+				m.Width = Convert.ToDouble(row[indexes[MaterialFields.Width]]) * (Settings.Unit == CSVUnit.Metric ? 1 : 25.4);
+			if (indexes[MaterialFields.Length] is not -1)
+				m.Length = Convert.ToDouble(row[indexes[MaterialFields.Length]]) * (Settings.Unit == CSVUnit.Metric ? 1 : 25.4);
+			if (indexes[MaterialFields.Thickness] is not -1)
+				m.Thickness = Convert.ToDouble(row[indexes[MaterialFields.Thickness]]) * (Settings.Unit == CSVUnit.Metric ? 1 : 25.4);
+			materials.Add(m);
 		}
 
 		return materials;
 	}
 
-	private static Dictionary<MaterialFields, int> LoadIndexes(this DataGrid grid)
+	/// <summary>
+	/// Return a field and it's matching index. Indexes are initialized to -1.
+	/// </summary>
+	/// <param name="grid"></param>
+	/// <returns></returns>
+	private static Dictionary<MaterialFields, int> GetColumnIndexes(this DataGrid grid)
 	{
-		Dictionary<MaterialFields, int> dict = [];
-
-		for (int i = 0; i < grid.Columns.Count; i++)
+		// Initialize the Dictionary with -1 for skipping in case not all values are provided.
+		Dictionary<MaterialFields, int> dict = new()
 		{
-			if (grid.Columns[i].Header is ComboBox comboBox &&
-				comboBox.SelectedItem is string selectedItem &&
-				Enum.TryParse(selectedItem, out MaterialFields field) &&
-				field != MaterialFields.Ignore)
-			{
-				if (!dict.TryAdd(field, i))
-				{
-					throw new InvalidOperationException("Duplicate Fields!");
-				}
-			}
-		}
-
-		return dict;
-	}
-
-	private static ComboBox CreateMaterialComboBox()
-	{
-		return new ComboBox
-		{
-			ItemsSource = Enum.GetNames(typeof(MaterialFields)),
-			SelectedItem = MaterialFields.Ignore.ToString(),
-			Width = 120
+			{ MaterialFields.Name, -1 },
+			{ MaterialFields.Description, -1 },
+			{ MaterialFields.DefaultCost, -1 },
+			{ MaterialFields.SellPrice, -1 },
+			{ MaterialFields.Width, -1 },
+			{ MaterialFields.Length, -1 },
+			{ MaterialFields.Thickness, -1 }
 		};
+
+		int index = 0;
+		foreach (var column in grid.Columns)
+		{
+			if (column.Header is ComboBox box)
+			{
+				string selectedText = (string)box.SelectedItem;
+				dict[Enum.Parse<MaterialFields>(selectedText)] = index;
+			}
+			index++;
+		}
+		return dict;
 	}
 }
