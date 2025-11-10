@@ -13,6 +13,7 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Icon="resources/icon_white.ico"
         ResizeMode="CanResize"
+        Style="{StaticResource WindowStyle}"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
 
@@ -35,7 +36,7 @@
         <Grid>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="75" />
+                <RowDefinition Height="85" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 

@@ -89,7 +89,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 		{
 			CheckFileExists = true,
 			CheckPathExists = true,
-			DefaultExt = "Text Files|*.csv;*.txt;"
+			Filter = "Text Files|*.csv;*.txt;"
 		};
 		if (ofd.ShowDialog() == true)
 		{

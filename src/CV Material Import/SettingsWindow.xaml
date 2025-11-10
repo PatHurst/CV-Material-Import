@@ -9,6 +9,7 @@
         Height="450"
         ContentRendered="Window_Loaded"
         ResizeMode="NoResize"
+        Style="{StaticResource WindowStyle}"
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d">
     <DockPanel>
