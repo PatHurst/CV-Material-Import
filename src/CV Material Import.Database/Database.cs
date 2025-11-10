@@ -1,5 +1,4 @@
 ﻿using System.Data;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 
@@ -85,7 +84,7 @@ public class Database
 	/// Execute sql text against the database.
 	/// </summary>
 	/// <param name="sql">The sql command text.</param>
-	/// <returns>The number of rows affected of -1 if the command did not succeed.</returns>
+	/// <returns>The number of rows affected.</returns>
 	public int Execute(string sql)
 	{
 		if (!IsConnected)
@@ -95,17 +94,7 @@ public class Database
 		}
 		_command.CommandText = sql;
 		_command.CommandType = CommandType.Text;
-		try
-		{
-			return _command.ExecuteNonQuery();
-		}
-		catch (Exception ex)
-		{
-			StringBuilder sb = new($"The sql command \"{sql}\" did not execute successfully:");
-			sb.AppendLine(ex.Message);
-			MessageBox.Show(sb.ToString(), "Command Execution Error");
-			return -1;
-		}
+		return _command.ExecuteNonQuery();
 	}
 
 	/// <summary>
@@ -123,17 +112,7 @@ public class Database
 		}
 		_command.CommandText = sql;
 		_command.CommandType = CommandType.Text;
-		try
-		{
-			return (T)_command.ExecuteScalar();
-		}
-		catch (Exception ex)
-		{
-			StringBuilder sb = new($"The sql command \"{sql}\" did not execute successfully:");
-			sb.AppendLine(ex.Message);
-			MessageBox.Show(sb.ToString(), "Command Execution Error");
-			return default!;
-		}
+		return (T)_command.ExecuteScalar();
 	}
 
 	/// <summary>
