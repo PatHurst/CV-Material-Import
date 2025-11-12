@@ -234,6 +234,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 		RowsInsertedStatus.Foreground = e > 0
 			? Brushes.Green 
 			: Brushes.Red;
+		ProgressBar.Value = 100;
 	}
 
 	private void InsertMaterialsCommand_CommandProgressChanged(object? sender, float e) => ProgressBar.Value = e * 100;

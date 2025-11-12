@@ -37,6 +37,7 @@
                          Width="200"
                          Height="12"
                          Margin="200,0,200,0"
+                         Foreground="Green"
                          Value="0" />
             <StatusBarItem x:Name="RowsInsertedStatus" HorizontalAlignment="Right" />
 
