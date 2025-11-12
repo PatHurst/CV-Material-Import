@@ -7,9 +7,9 @@
   "targets": {
     ".NETCoreApp,Version=v9.0": {},
     ".NETCoreApp,Version=v9.0/win-x64": {
-      "CV Material Import/1.0.0": {
+      "CV Material Import/1.1.0": {
         "dependencies": {
-          "Microsoft.NET.ILLink.Tasks": "9.0.10"
+          "Microsoft.NET.ILLink.Tasks": "9.0.11"
         },
         "runtime": {
           "CV Material Import.dll": {}
@@ -280,7 +280,7 @@
           }
         }
       },
-      "Microsoft.NET.ILLink.Tasks/9.0.10": {},
+      "Microsoft.NET.ILLink.Tasks/9.0.11": {},
       "Microsoft.SqlServer.Server/1.0.0": {
         "runtime": {
           "lib/netstandard2.0/Microsoft.SqlServer.Server.dll": {
@@ -346,21 +346,21 @@
           }
         }
       },
-      "CV Material Import.Database/1.0.0": {
+      "CV Material Import.Database/1.1.0": {
         "dependencies": {
           "Microsoft.Data.SqlClient": "6.1.2"
         },
         "runtime": {
           "CV Material Import.Database.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.0.0"
           }
         }
       }
     }
   },
   "libraries": {
-    "CV Material Import/1.0.0": {
+    "CV Material Import/1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -505,12 +505,12 @@
       "path": "microsoft.identitymodel.tokens/7.7.1",
       "hashPath": "microsoft.identitymodel.tokens.7.7.1.nupkg.sha512"
     },
-    "Microsoft.NET.ILLink.Tasks/9.0.10": {
+    "Microsoft.NET.ILLink.Tasks/9.0.11": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-sseaSJcBxKEpkc59hnB00b3NmJdGvJLfj74HK+nucHxERxbZSUREuWKjC9ywc+HdzJvJyiP2eiyEOROaGSfcPw==",
-      "path": "microsoft.net.illink.tasks/9.0.10",
-      "hashPath": "microsoft.net.illink.tasks.9.0.10.nupkg.sha512"
+      "sha512": "sha512-vvB9rtDmWaXgYkViT00KORBVmA3pcYsHlgd9vOPqL9sf5bKy3rvLMF1+sI1uUfVj28S3itirHlHmX5/kcpZKNw==",
+      "path": "microsoft.net.illink.tasks/9.0.11",
+      "hashPath": "microsoft.net.illink.tasks.9.0.11.nupkg.sha512"
     },
     "Microsoft.SqlServer.Server/1.0.0": {
       "type": "package",
@@ -601,7 +601,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "CV Material Import.Database/1.0.0": {
+    "CV Material Import.Database/1.1.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

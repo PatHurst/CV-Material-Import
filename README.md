@@ -12,6 +12,10 @@ An application to import materials into CV from CSV files
 ## Easy Database Connection  
 ![screenshot](https://github.com/Code-Crafter-s-Consortium/CV-Material-Import/blob/main/images/databaseconnection.jpg?raw=true)
 
+### V1.1.0
+- Prompts user on duplicate materials
+- Insert disabled on duplicate column selections
+
 ### V1.0.0  
 Released first version  
 
