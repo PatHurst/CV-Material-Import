@@ -4,6 +4,7 @@ using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 using CV_Material_Import.CSVReader;
@@ -19,12 +20,15 @@ namespace CV_Material_Import;
 public partial class MainWindow : Window, INotifyPropertyChanged
 {
 	private string _openedFile = string.Empty; // path to currently opened file
-	private Dictionary<string, int> _materialFolders = App.Database.GetMaterialFolders(); //the CV material folders
+	private Dictionary<string, int> _materialFolders; //the CV material folders
 
 	// binding sources
-	public List<string> MaterialFolders => [.. _materialFolders.Keys];
+	public Dictionary<string, int> MaterialFolders => _materialFolders;
+
 	public List<string> Delimiters => [..Enum.GetNames<CSVDelimiter>()];
+
 	public List<string> TextQualifiers => [.. Enum.GetNames<CSVTextQualifier>()];
+
 	private DataView _dataView = new();
 	public DataView DataView
 	{
@@ -41,6 +45,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
 	public MainWindow()
 	{
+		_materialFolders = App.Database.GetMaterialFolders();
 		InitializeComponent();
 		InitializeControls();
 
@@ -72,7 +77,8 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 		{
 			CSVTextQualifier.None => 0,
 			CSVTextQualifier.Quotation => 1,
-			CSVTextQualifier.Apostrophe => 2
+			CSVTextQualifier.Apostrophe => 2,
+			_ => 0
 		};
 		SetLabel(App.Database.IsConnected, App.Database.ToString());
 	}
@@ -134,10 +140,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 		await Load();
 	}
 
-	private void RadioButton_Checked(object sender, RoutedEventArgs e)
-	{
-		Settings.Unit = MetricRadioButton.IsChecked == true ? CSVUnit.Metric : CSVUnit.Imperial;
-	}
+	private void RadioButton_Checked(object sender, RoutedEventArgs e) => Settings.Unit = MetricRadioButton.IsChecked == true ? CSVUnit.Metric : CSVUnit.Imperial;
 
 	private void DatabaseSettings_Click(object sender, RoutedEventArgs e)
 	{
@@ -152,31 +155,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 			SetLabel(connectionOpen, db.ToString());
 	}
 
-	private void InsertMaterialButton_Click(object sender, RoutedEventArgs e)
-	{
-		try
-		{
-			var materials = MaterialGrid.GetMaterials();
-			//materials.ToList().ForEach(m => MessageBox.Show(m.ToString()));
-			int rowsInserted = new InsertMaterialsCommand(materials, _materialFolders[(string)MaterialFoldersComboBox.SelectedItem]).Execute();
-			RowsInsertedStatus.Content = $"{rowsInserted} rows inserted successfully";
-			RowsInsertedStatus.Foreground = rowsInserted > 0 ? Brushes.Green : Brushes.Red;
-		}
-		catch (Exception ex)
-		{
-			MessageBox.Show("Operation Canceled: " + ex.Message);
-		}
-	}
+	private async void HasHeadersCheckBox_Checked(object sender, RoutedEventArgs e) => await Load();
 
-	private async void HasHeadersCheckBox_Checked(object sender, RoutedEventArgs e)
-	{
-		await Load();
-	}
-
-	private void MaterialGrid_Loaded(object sender, RoutedEventArgs e)
-	{
-		CreateHeaders();
-	}
+	private void MaterialGrid_Loaded(object sender, RoutedEventArgs e) => CreateHeaders();
 
 	private void CreateHeaders()
 	{
@@ -226,6 +207,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 				selectedValues.Add(selectedText);
 			}
 		}
+		((InsertMaterialsCommand)InsertMaterialsCommand).RaiseCanExecuteChanged();
 	}
 
 	private void On_PropertyComboBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -233,8 +215,36 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 		ParseHeaders();
 	}
 
-	public event PropertyChangedEventHandler PropertyChanged;
+	private InsertMaterialsCommand? _insertMaterialsCommand;
+	public ICommand InsertMaterialsCommand
+	{
+		get
+		{
+			_insertMaterialsCommand ??=
+				new InsertMaterialsCommand(() => MaterialGrid.GetMaterials(), () => ((KeyValuePair<string, int>)MaterialFoldersComboBox.SelectedItem).Value);
+			_insertMaterialsCommand.CommandProgressChanged += InsertMaterialsCommand_CommandProgressChanged;
+			_insertMaterialsCommand.CommandCompleted += InsertMaterialsCommand_CommandCompleted;
+			return _insertMaterialsCommand;
+		}
+	}
+
+	private void InsertMaterialsCommand_CommandCompleted(object? sender, int e)
+	{
+		RowsInsertedStatus.Content = $"{e} rows inserted successfully";
+		RowsInsertedStatus.Foreground = e > 0
+			? Brushes.Green 
+			: Brushes.Red;
+	}
+
+	private void InsertMaterialsCommand_CommandProgressChanged(object? sender, float e) => ProgressBar.Value = e * 100;
+
+	public event PropertyChangedEventHandler? PropertyChanged;
+
 	protected void OnPropertyChanged(string propertyName) =>
 		PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+	private void Exit_Click(object sender, RoutedEventArgs e)
+	{
+		Application.Current.Shutdown(0);
+	}
 }

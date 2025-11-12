@@ -23,14 +23,23 @@
             <MenuItem Header="File">
                 <MenuItem Click="OpenCSVFile" Header="Open CSV File" />
                 <Separator />
-                <MenuItem Header="Exit" />
+                <MenuItem Click="Exit_Click"
+                          Header="Exit"
+                          Icon="X" />
             </MenuItem>
             <MenuItem Click="DatabaseSettings_Click" Header="Database Settings" />
         </Menu>
 
         <StatusBar x:Name="StatusBar" DockPanel.Dock="Bottom">
+
             <StatusBarItem x:Name="ConnectionStatusLabel" />
+            <ProgressBar x:Name="ProgressBar"
+                         Width="200"
+                         Height="12"
+                         Margin="200,0,200,0"
+                         Value="0" />
             <StatusBarItem x:Name="RowsInsertedStatus" HorizontalAlignment="Right" />
+
         </StatusBar>
 
         <Grid>
@@ -93,14 +102,21 @@
                 <ComboBox x:Name="MaterialFoldersComboBox"
                           Width="120"
                           Height="24"
-                          ItemsSource="{Binding MaterialFolders}"
-                          SelectedIndex="0" />
+                          ItemsSource="{Binding MaterialFolders, Mode=OneTime}"
+                          SelectedIndex="0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Key}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <Button x:Name="InsertMaterialButton"
                         Width="120"
                         Height="24"
                         Margin="15,5,15,5"
                         HorizontalAlignment="Right"
-                        Click="InsertMaterialButton_Click"
+                        Command="{Binding InsertMaterialsCommand}"
+                        CommandParameter="{Binding ElementName=MaterialGrid}"
                         Content="Insert Materials" />
             </StackPanel>
 
