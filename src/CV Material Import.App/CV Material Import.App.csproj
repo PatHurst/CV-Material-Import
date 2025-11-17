@@ -7,28 +7,30 @@
 	<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	<SelfContained>false</SelfContained>
     <Nullable>enable</Nullable>
-	<PublishSingleFile>true</PublishSingleFile>
+	<PublishSingleFile>false</PublishSingleFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+	<AssemblyName>CV Material Import</AssemblyName>
     <ApplicationIcon>resources\icon_white.ico</ApplicationIcon>
     <Version>1.1.0</Version>
     <Authors>Patrick Hurst</Authors>
     <Company>InnovaTech</Company>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>x64</Platforms>
+	<UseAppHost>true</UseAppHost>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="resources\icon_black.ico" />
-  </ItemGroup>
+<ItemGroup>
+	<Resource Include="resources\icon_black.ico" />
+	<Resource Include="resources\icon_white.ico">
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Resource>
+</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
     <ProjectReference Include="..\CV Material Import.CSVReader\CV Material Import.CSVReader.csproj" />
     <ProjectReference Include="..\CV Material Import.Database\CV Material Import.Database.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Resource Include="resources\icon_black.ico" />
-    <Resource Include="resources\icon_white.ico" />
-  </ItemGroup>
 
 </Project>

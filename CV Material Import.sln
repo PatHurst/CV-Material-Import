@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36623.8
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV Material Import", "src\CV Material Import\CV Material Import.csproj", "{7213B490-11AD-410A-8F22-C997F4D3A5E8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV Material Import.App", "src\CV Material Import.App\CV Material Import.App.csproj", "{7213B490-11AD-410A-8F22-C997F4D3A5E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CV Material Import.Database", "src\CV Material Import.Database\CV Material Import.Database.csproj", "{E686D09D-2710-4931-9751-71D9C4E2DA43}"
 EndProject
@@ -29,6 +29,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{5522D1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "publish", "publish", "{48D3F14F-81F4-48B9-A034-5518DB51490F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CV Material Import.Installer", "src\CV Material Import.Installer\CV Material Import.Installer.vdproj", "{2BB55F4F-2A88-B586-5AAD-B5179FDCED3D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +72,10 @@ Global
 		{A5F1E562-5487-4CF5-B2E4-BD9350B8F06B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A5F1E562-5487-4CF5-B2E4-BD9350B8F06B}.Release|x64.ActiveCfg = Release|Any CPU
 		{A5F1E562-5487-4CF5-B2E4-BD9350B8F06B}.Release|x64.Build.0 = Release|Any CPU
+		{2BB55F4F-2A88-B586-5AAD-B5179FDCED3D}.Debug|Any CPU.ActiveCfg = Debug
+		{2BB55F4F-2A88-B586-5AAD-B5179FDCED3D}.Debug|x64.ActiveCfg = Debug
+		{2BB55F4F-2A88-B586-5AAD-B5179FDCED3D}.Release|Any CPU.ActiveCfg = Release
+		{2BB55F4F-2A88-B586-5AAD-B5179FDCED3D}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -79,6 +85,7 @@ Global
 		{E686D09D-2710-4931-9751-71D9C4E2DA43} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{47BD9874-FE10-4906-939F-F8533E7B11C9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A5F1E562-5487-4CF5-B2E4-BD9350B8F06B} = {86A8479D-0DD5-48C0-95FC-BC178FFAC37C}
+		{2BB55F4F-2A88-B586-5AAD-B5179FDCED3D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {26AE092C-009B-4F02-B0A7-AC0AE929255C}
